@@ -90,6 +90,26 @@ namespace MVCTemplate.Controllers
         }
 
         /****
+         * 
+        ****/
+        public IActionResult StockStat(string symbol)
+        {
+            //Set ViewBag variable first
+            ViewBag.dbSuccessChart = 0;
+            List<Equity> equities = new List<Equity>();
+            if (symbol != null)
+            {
+                IEXHandler webHandler = new IEXHandler();
+                equities = webHandler.GetChart(symbol);
+                equities = equities.OrderBy(c => c.date).ToList(); //Make sure the data is in ascending order of date.
+            }
+
+            CompaniesStatistics companiesEquities = getCompaniesStatisticsModel(equities);
+
+            return View(companiesEquities);
+        }
+
+        /****
          * The Refresh action calls the ClearTables method to delete records from a or all tables.
          * Count of current records for each table is passed to the Refresh View.
         ****/
@@ -196,6 +216,27 @@ namespace MVCTemplate.Controllers
             float avgprice = equities.Average(e => e.high);
             double avgvol = equities.Average(e => e.volume) / 1000000; //Divide volume by million
             return new CompaniesEquities(companies, equities.Last(), dates, prices, volumes, avgprice, avgvol);
+        }
+
+        /****
+         * Returns the ViewModel CompaniesEquities based on the data provided.
+         ****/
+        public CompaniesStatistics getCompaniesStatisticsModel(List<Equity> equities)
+        {
+            List<Company> companies = dbContext.Companies.ToList();
+
+            if (equities.Count == 0)
+            {
+                return new CompaniesStatistics(companies, null, "", "", "", 0, 0);
+            }
+
+            Equity current = equities.Last();
+            string dates = string.Join(",", equities.Select(e => e.date));
+            string prices = string.Join(",", equities.Select(e => e.high));
+            string volumes = string.Join(",", equities.Select(e => e.volume / 1000000)); //Divide vol by million
+            float avgprice = equities.Average(e => e.high);
+            double avgvol = equities.Average(e => e.volume) / 1000000; //Divide volume by million
+            return new CompaniesStatistics(companies, equities.Last(), dates, prices, volumes, avgprice, avgvol);
         }
 
     }
