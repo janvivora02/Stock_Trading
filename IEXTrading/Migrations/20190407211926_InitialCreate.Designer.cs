@@ -11,7 +11,7 @@ using System;
 namespace IEXTrading.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190407202353_InitialCreate")]
+    [Migration("20190407211926_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
