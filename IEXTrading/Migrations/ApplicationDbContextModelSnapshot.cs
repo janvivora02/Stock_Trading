@@ -94,6 +94,22 @@ namespace IEXTrading.Migrations
                     b.ToTable("Gainers");
                 });
 
+            modelBuilder.Entity("IEXTrading.Models.Losers", b =>
+                {
+                    b.Property<string>("symbol")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("companyName");
+
+                    b.Property<string>("primaryExchange");
+
+                    b.Property<string>("sector");
+
+                    b.HasKey("symbol");
+
+                    b.ToTable("Losers");
+                });
+
             modelBuilder.Entity("IEXTrading.Models.Equity", b =>
                 {
                     b.HasOne("IEXTrading.Models.Company")

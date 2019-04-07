@@ -40,6 +40,20 @@ namespace IEXTrading.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Losers",
+                columns: table => new
+                {
+                    symbol = table.Column<string>(nullable: false),
+                    companyName = table.Column<string>(nullable: true),
+                    primaryExchange = table.Column<string>(nullable: true),
+                    sector = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Losers", x => x.symbol);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Equities",
                 columns: table => new
                 {
@@ -83,6 +97,9 @@ namespace IEXTrading.Migrations
 
             migrationBuilder.DropTable(
                 name: "Gainers");
+
+            migrationBuilder.DropTable(
+                name: "Losers");
 
             migrationBuilder.DropTable(
                 name: "Companies");

@@ -110,6 +110,7 @@ namespace MVCTemplate.Controllers
             tableCount.Add("Companies", dbContext.Companies.Count());
             tableCount.Add("Charts", dbContext.Equities.Count());
             tableCount.Add("Gainers", dbContext.Gainers.Count());
+            tableCount.Add("Losers", dbContext.Losers.Count());
             return View(tableCount);
         }
 
@@ -204,6 +205,7 @@ namespace MVCTemplate.Controllers
                 dbContext.Equities.RemoveRange(dbContext.Equities);
                 dbContext.Companies.RemoveRange(dbContext.Companies);
                 dbContext.Gainers.RemoveRange(dbContext.Gainers);
+                dbContext.Losers.RemoveRange(dbContext.Losers);
             }
             else if ("Companies".Equals(tableToDel))
             {
@@ -219,6 +221,10 @@ namespace MVCTemplate.Controllers
             else if ("Gainers".Equals(tableToDel))
             {
                 dbContext.Gainers.RemoveRange(dbContext.Gainers);
+            }
+            else if ("Losers".Equals(tableToDel))
+            {
+                dbContext.Losers.RemoveRange(dbContext.Losers);
             }
             dbContext.SaveChanges();
         }
@@ -273,6 +279,45 @@ namespace MVCTemplate.Controllers
             String gainersData = JsonConvert.SerializeObject(gainersList);
             HttpContext.Session.SetString(SessionKeyName, gainersData);
             return View(gainersList);
+        }
+
+        public IActionResult Losers()
+        {
+            ViewBag.dbSucessComp = 0;
+            IEXHandler webHandler = new IEXHandler();
+            List<StockStats> losersList = webHandler.Losers();
+            String losersData = JsonConvert.SerializeObject(losersList);
+            HttpContext.Session.SetString(SessionKeyName, losersData);
+            return View(losersList);
+        }
+
+        public IActionResult PopulateLosers()
+        {
+            string losersData = HttpContext.Session.GetString(SessionKeyName);
+            List<StockStats> losersList = null;
+            if (losersData != "")
+            {
+                var settings = new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore,
+                    MissingMemberHandling = MissingMemberHandling.Ignore
+                };
+                losersList = JsonConvert.DeserializeObject<List<StockStats>>(losersData, settings);
+            }
+
+            foreach (StockStats loser in losersList)
+            {
+                //Database will give PK constraint violation error when trying to insert record with existing PK.
+                //So add company only if it doesnt exist, check existence using symbol (PK)
+                if (dbContext.Losers.Where(c => c.symbol.Equals(loser.symbol)).Count() == 0)
+                {
+                    Losers loserData = new Losers(loser.symbol, loser.companyName, loser.primaryExchange, loser.sector);
+                    dbContext.Losers.Add(loserData);
+                }
+            }
+            dbContext.SaveChanges();
+            ViewBag.dbSuccessComp = 1;
+            return View("Losers", losersList);
         }
 
     }

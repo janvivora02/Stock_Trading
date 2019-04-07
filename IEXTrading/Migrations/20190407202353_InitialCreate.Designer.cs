@@ -11,7 +11,7 @@ using System;
 namespace IEXTrading.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190407171130_InitialCreate")]
+    [Migration("20190407202353_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -93,6 +93,22 @@ namespace IEXTrading.Migrations
                     b.HasKey("symbol");
 
                     b.ToTable("Gainers");
+                });
+
+            modelBuilder.Entity("IEXTrading.Models.Losers", b =>
+                {
+                    b.Property<string>("symbol")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("companyName");
+
+                    b.Property<string>("primaryExchange");
+
+                    b.Property<string>("sector");
+
+                    b.HasKey("symbol");
+
+                    b.ToTable("Losers");
                 });
 
             modelBuilder.Entity("IEXTrading.Models.Equity", b =>
