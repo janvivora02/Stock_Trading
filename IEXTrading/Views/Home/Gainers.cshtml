@@ -1,0 +1,49 @@
+﻿@model List<IEXTrading.Models.StockStats>
+@{
+    ViewData["Title"] = "Top 10 Gainers";
+}
+
+<h2>Top 10 Gainers</h2>
+
+<hr />
+<table class="table">
+    <thead>
+        <tr>
+            <th> Symbol </th>
+            <th> Name </th>
+            <th> Primary Exchange </th>
+            <th> Sector </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.symbol)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.companyName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.primaryExchange)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.sector)
+                </td>
+            </tr>
+        }
+        @{
+            Model.Count();
+        }
+        <tr>
+            <td>
+                <a id="dboptg" asp-controller="Home" asp-action="PopulateGainers"><img src="~/images/button_save-data.png" /></a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<script>
+    alertDbSave(@ViewBag.dbSuccessComp);
+</script>

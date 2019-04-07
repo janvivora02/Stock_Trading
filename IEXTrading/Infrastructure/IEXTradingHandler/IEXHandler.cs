@@ -77,5 +77,28 @@ namespace IEXTrading.Infrastructure.IEXTradingHandler
 
             return Equities;
         }
+
+        public List<StockStats> Gainers()
+        {
+            string IEXTrading_API_PATH = BASE_URL + "stock/market/list/gainers";
+            string _stocklist = "";
+            List<StockStats> _list = null;
+            StockDetails sd = new StockDetails();
+
+            httpClient.BaseAddress = new Uri(IEXTrading_API_PATH);
+            HttpResponseMessage response = httpClient.GetAsync(IEXTrading_API_PATH).GetAwaiter().GetResult();
+            if (response.IsSuccessStatusCode)
+            {
+                _stocklist = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            }
+
+            if (!_stocklist.Equals(""))
+            {
+                _list = JsonConvert.DeserializeObject<List<StockStats>>(_stocklist, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+            }
+
+
+            return _list;
+        }
     }
 }

@@ -52,20 +52,7 @@ namespace MVCTemplate.Controllers
             List<Company> companies = webHandler.GetSymbols();
 
             String companiesData = JsonConvert.SerializeObject(companies);
-            //int size =  System.Text.ASCIIEncoding.ASCII.GetByteCount(companiesData);
-
             HttpContext.Session.SetString(SessionKeyName, companiesData);
-            //Save comapnies in TempData
-            //if ( size < 4000)
-            //{
-            //    TempData["Companies"] = companiesData;
-            //}
-            //else
-            //{
-            //    TempData["Companies"] = "Fetch";
-            //}
-            
-            
 
             return View(companies);
         }
@@ -122,6 +109,7 @@ namespace MVCTemplate.Controllers
             Dictionary<string, int> tableCount = new Dictionary<string, int>();
             tableCount.Add("Companies", dbContext.Companies.Count());
             tableCount.Add("Charts", dbContext.Equities.Count());
+            tableCount.Add("Gainers", dbContext.Gainers.Count());
             return View(tableCount);
         }
 
@@ -150,7 +138,37 @@ namespace MVCTemplate.Controllers
             ViewBag.dbSuccessComp = 1;
             return View("Symbols", companies);
         }
+        /****
+         * Saves the gainers in database.
+        ****/
+        public IActionResult PopulateGainers()
+        {
+            string gainersData = HttpContext.Session.GetString(SessionKeyName);
+            List<StockStats> gainersList = null;
+            if (gainersData != "")
+            {
+                var settings = new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore,
+                    MissingMemberHandling = MissingMemberHandling.Ignore
+                };
+                gainersList = JsonConvert.DeserializeObject<List<StockStats>>(gainersData, settings);
+            }
 
+            foreach (StockStats gainer in gainersList)
+            {
+                //Database will give PK constraint violation error when trying to insert record with existing PK.
+                //So add company only if it doesnt exist, check existence using symbol (PK)
+                if (dbContext.Gainers.Where(c => c.symbol.Equals(gainer.symbol)).Count() == 0)
+                {
+                    Gainers gainerData = new Gainers(gainer.symbol, gainer.companyName, gainer.primaryExchange, gainer.sector);
+                    dbContext.Gainers.Add(gainerData);
+                }
+            }
+            dbContext.SaveChanges();
+            ViewBag.dbSuccessComp = 1;
+            return View("Gainers", gainersList);
+        }
         /****
          * Saves the equities in database.
         ****/
@@ -185,6 +203,7 @@ namespace MVCTemplate.Controllers
                 //First remove equities and then the companies
                 dbContext.Equities.RemoveRange(dbContext.Equities);
                 dbContext.Companies.RemoveRange(dbContext.Companies);
+                dbContext.Gainers.RemoveRange(dbContext.Gainers);
             }
             else if ("Companies".Equals(tableToDel))
             {
@@ -196,6 +215,10 @@ namespace MVCTemplate.Controllers
             else if ("Charts".Equals(tableToDel))
             {
                 dbContext.Equities.RemoveRange(dbContext.Equities);
+            }
+            else if ("Gainers".Equals(tableToDel))
+            {
+                dbContext.Gainers.RemoveRange(dbContext.Gainers);
             }
             dbContext.SaveChanges();
         }
@@ -222,7 +245,7 @@ namespace MVCTemplate.Controllers
         }
 
         /****
-         * Returns the ViewModel CompaniesEquities based on the data provided.
+         * Returns the ViewModel CompaniesStatistics based on the data provided.
          ****/
         public CompaniesStatistics getCompaniesStatisticsModel(List<Equity> equities)
         {
@@ -240,6 +263,16 @@ namespace MVCTemplate.Controllers
             float avgprice = equities.Average(e => e.high);
             double avgvol = equities.Average(e => e.volume) / 1000000; //Divide volume by million
             return new CompaniesStatistics(companies, equities.Last(), dates, prices, volumes, avgprice, avgvol);
+        }
+
+        public IActionResult Gainers()
+        {
+            ViewBag.dbSucessComp = 0;
+            IEXHandler webHandler = new IEXHandler();
+            List<StockStats> gainersList = webHandler.Gainers();
+            String gainersData = JsonConvert.SerializeObject(gainersList);
+            HttpContext.Session.SetString(SessionKeyName, gainersData);
+            return View(gainersList);
         }
 
     }
