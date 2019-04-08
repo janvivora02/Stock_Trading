@@ -2,30 +2,40 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>IEX Trading Application</h2>
-<hr />
+<h2>Bull Trades</h2>
 
-<div>
+<p>
     <p>
-        This application let's you fetch trading data from IEX via their public <a href="https://iextrading.com/developer/">API</a>.
-        <br />
-        <br />
-        The <a asp-area="" asp-controller="Home" asp-action="Symbols">Symbols</a> tab fetches symbols data from the
-        <a href="https://iextrading.com/developer/docs/#reference-data">IEX Reference API </a> and displays the results.
-        This data can also be saved in the local database.
-        <br />
-        The <a asp-area="" asp-controller="Home" asp-action="Quote">Quote</a> tab let's you select a Company(symbol) and fetches a quote from
-        <a href="https://iextrading.com/developer/docs/#stocks">IEX Stock API</a>.
-        The quote can also be saved in the local database.
-        <br />
-        The <a asp-area="" asp-controller="Home" asp-action="Refresh">Refresh</a> tab let's you refresh the local database, that is, remove all its contents.
+        As stated by Warren Buffet “Why not invest your assets in the companies you really like? As Mae West said, ‘Too much of a good thing can be wonderful.'”
+
+        Going by the above statement, Bulls Trade web application was built to aid you in Never losing money, Staying rational and sticking to your homework 
+        when researching businesses in which company to best invest and gain returns.
+        
+        The company focuses on different type of risk taking investors in order to give them a lucid ideology on profitable investments which would be translatable
+        into greater gains. The company also provides a lucid direction to any user or investor visiting the website with the help of analytics highlighted based on
+        the data gathered. Based on the predictions using Quotes, Top 10 Gainers, Top 10 Losers, Quarterly Financial Data from the previous years.
+
     </p>
     <p>
-        Following learning objectives are fulfilled -
         <ul>
-            <li>Connection to REST API.</li>
-            <li>Connection to database.</li>
-            <li>CRUD operations.</li>
+            <li>Symbols – Provides the symbols for all the company names as per the stock market standards 
+            and also for stock identification</li>
+            <li>Quotes – Quotes help the investor find the lowest, highest, open price, closing price and 
+            Latest price so as to give the customer the overall idea to trade the stocks accordingly</li>
+            <li>Top 10 Gainers – Provides the Sector, Primary Exchange to give the top 10 high  performing 
+            stocks in the market, which will encourage the investor to invest with optimistic data proof.</li>
+            <li>Top 10 Losers – Provides the sector , primary exchange to the give the top 10 low performing
+            stocks in the market which will discourage with a motive to save the investor from stock market losses.</li>
+            <li>Quarterly Financial Data – Financial data on a quarterly basis for the customers to analyze the 
+            historical ups and downs of the company stocks in the market</li>
+            <li>Charts – Provides a graphical representation of data with relevance to previous annual year with
+            details such as opening/closing price, highest price along with the volume of stocks that was traded</li>
+        
         </ul>
+
+
     </p>
+
+    <p>All the above mentioned data comes together to give a holistic view that the company represents using the web application. This aids the investor in making 
+    trading decisions which will benefit and yield maximum profits in their stock trading endeavors.</p>
 </div>
