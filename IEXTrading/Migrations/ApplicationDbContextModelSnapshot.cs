@@ -78,6 +78,56 @@ namespace IEXTrading.Migrations
                     b.ToTable("Equities");
                 });
 
+            modelBuilder.Entity("IEXTrading.Models.FinancialsData", b =>
+                {
+                    b.Property<int>("sno")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<double>("cashChange");
+
+                    b.Property<double>("cashFlow");
+
+                    b.Property<double>("costOfRevenue");
+
+                    b.Property<double>("currentAssets");
+
+                    b.Property<double>("currentCash");
+
+                    b.Property<double>("currentDebt");
+
+                    b.Property<double>("grossProfit");
+
+                    b.Property<double>("netIncome");
+
+                    b.Property<double>("operatingExpense");
+
+                    b.Property<string>("operatingGainsLosses");
+
+                    b.Property<double>("operatingIncome");
+
+                    b.Property<double>("operatingRevenue");
+
+                    b.Property<string>("reportDate");
+
+                    b.Property<double>("researchAndDevelopment");
+
+                    b.Property<double>("shareholderEquity");
+
+                    b.Property<string>("symbol");
+
+                    b.Property<double>("totalAssets");
+
+                    b.Property<double>("totalCash");
+
+                    b.Property<double>("totalLiabilities");
+
+                    b.Property<double>("totalRevenue");
+
+                    b.HasKey("sno");
+
+                    b.ToTable("FinancialData");
+                });
+
             modelBuilder.Entity("IEXTrading.Models.Gainers", b =>
                 {
                     b.Property<string>("symbol")

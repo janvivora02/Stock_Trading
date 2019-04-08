@@ -86,16 +86,7 @@ namespace MVCTemplate.Controllers
         {
             //Set ViewBag variable first
             ViewBag.dbSuccessChart = 0;
-            List<Equity> equities = new List<Equity>();
-            if (symbol != null)
-            {
-                IEXHandler webHandler = new IEXHandler();
-                equities = webHandler.GetChart(symbol);
-                equities = equities.OrderBy(c => c.date).ToList(); //Make sure the data is in ascending order of date.
-            }
-
-            CompaniesStatistics companiesEquities = getCompaniesStatisticsModel(equities);
-
+            CompaniesStatistics companiesEquities = getCompaniesStatisticsModel(symbol);
             return View(companiesEquities);
         }
 
@@ -111,6 +102,7 @@ namespace MVCTemplate.Controllers
             tableCount.Add("Charts", dbContext.Equities.Count());
             tableCount.Add("Gainers", dbContext.Gainers.Count());
             tableCount.Add("Losers", dbContext.Losers.Count());
+            tableCount.Add("FinancialData", dbContext.FinancialData.Count());
             return View(tableCount);
         }
 
@@ -206,6 +198,7 @@ namespace MVCTemplate.Controllers
                 dbContext.Companies.RemoveRange(dbContext.Companies);
                 dbContext.Gainers.RemoveRange(dbContext.Gainers);
                 dbContext.Losers.RemoveRange(dbContext.Losers);
+                dbContext.FinancialData.RemoveRange(dbContext.FinancialData);
             }
             else if ("Companies".Equals(tableToDel))
             {
@@ -225,6 +218,10 @@ namespace MVCTemplate.Controllers
             else if ("Losers".Equals(tableToDel))
             {
                 dbContext.Losers.RemoveRange(dbContext.Losers);
+            }
+            else if ("FinancialData".Equals(tableToDel))
+            {
+                dbContext.FinancialData.RemoveRange(dbContext.FinancialData);
             }
             dbContext.SaveChanges();
         }
@@ -253,22 +250,40 @@ namespace MVCTemplate.Controllers
         /****
          * Returns the ViewModel CompaniesStatistics based on the data provided.
          ****/
-        public CompaniesStatistics getCompaniesStatisticsModel(List<Equity> equities)
+        public CompaniesStatistics getCompaniesStatisticsModel(String symbol)
         {
-            List<Company> companies = dbContext.Companies.ToList();
-
-            if (equities.Count == 0)
+            List<Gainers> gainers = dbContext.Gainers.ToList();
+            if (symbol == null)
             {
-                return new CompaniesStatistics(companies, null, "", "", "", 0, 0);
+                return new CompaniesStatistics(gainers, null, 0, null, null);
             }
+            IEXHandler webHandler = new IEXHandler();
+            CompaniesStatistics stat = new CompaniesStatistics();
+            stat.Companies = gainers;
+            stat.symbol = symbol;
+            return stat;
+        }
 
-            Equity current = equities.Last();
-            string dates = string.Join(",", equities.Select(e => e.date));
-            string prices = string.Join(",", equities.Select(e => e.high));
-            string volumes = string.Join(",", equities.Select(e => e.volume / 1000000)); //Divide vol by million
-            float avgprice = equities.Average(e => e.high);
-            double avgvol = equities.Average(e => e.volume) / 1000000; //Divide volume by million
-            return new CompaniesStatistics(companies, equities.Last(), dates, prices, volumes, avgprice, avgvol);
+        public IActionResult Financials(string symbol)
+        {
+            ViewBag.dbSucessComp = 0;
+            CompaniesStatistics stat = new CompaniesStatistics();
+            stat.Companies = dbContext.Gainers.ToList();
+            if (symbol != null)
+            {
+                stat.symbol = symbol;
+                IEXHandler webHandler = new IEXHandler();
+                stat.financials = webHandler.getFinancials(symbol);
+                int count = 1;
+                foreach (FinancialsData data in stat.financials.financials)
+                {
+                    data.symbol = symbol;
+                    dbContext.FinancialData.Add(data);
+                }
+            }
+            dbContext.SaveChanges();
+            ViewBag.dbSuccessComp = 1;
+            return View(stat);
         }
 
         public IActionResult Gainers()

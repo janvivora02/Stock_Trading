@@ -26,6 +26,38 @@ namespace IEXTrading.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "FinancialData",
+                columns: table => new
+                {
+                    sno = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    cashChange = table.Column<double>(nullable: false),
+                    cashFlow = table.Column<double>(nullable: false),
+                    costOfRevenue = table.Column<double>(nullable: false),
+                    currentAssets = table.Column<double>(nullable: false),
+                    currentCash = table.Column<double>(nullable: false),
+                    currentDebt = table.Column<double>(nullable: false),
+                    grossProfit = table.Column<double>(nullable: false),
+                    netIncome = table.Column<double>(nullable: false),
+                    operatingExpense = table.Column<double>(nullable: false),
+                    operatingGainsLosses = table.Column<string>(nullable: true),
+                    operatingIncome = table.Column<double>(nullable: false),
+                    operatingRevenue = table.Column<double>(nullable: false),
+                    reportDate = table.Column<string>(nullable: true),
+                    researchAndDevelopment = table.Column<double>(nullable: false),
+                    shareholderEquity = table.Column<double>(nullable: false),
+                    symbol = table.Column<string>(nullable: true),
+                    totalAssets = table.Column<double>(nullable: false),
+                    totalCash = table.Column<double>(nullable: false),
+                    totalLiabilities = table.Column<double>(nullable: false),
+                    totalRevenue = table.Column<double>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FinancialData", x => x.sno);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Gainers",
                 columns: table => new
                 {
@@ -94,6 +126,9 @@ namespace IEXTrading.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Equities");
+
+            migrationBuilder.DropTable(
+                name: "FinancialData");
 
             migrationBuilder.DropTable(
                 name: "Gainers");

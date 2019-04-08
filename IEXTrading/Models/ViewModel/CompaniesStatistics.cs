@@ -7,23 +7,25 @@ namespace IEXTrading.Models.ViewModel
 {
     public class CompaniesStatistics
     {
-        public List<Company> Companies { get; set; }
-        public Equity Current { get; set; }
-        public string Dates { get; set; }
-        public string Prices { get; set; }
-        public string Volumes { get; set; }
-        public float AvgPrice { get; set; }
-        public double AvgVolume { get; set; }
+        // current
+        public List<Gainers> Companies { get; set; }
+        public string symbol { get; set; }
+        public double price { get; set; }
+        public Quote quote { get; set; }
+        public Financials financials { get; set; }
 
-        public CompaniesStatistics(List<Company> companies, Equity current, string dates, string prices, string volumes, float avgprice, double avgvolume)
+        public CompaniesStatistics(List<Gainers> gainers, string sym, float pric,
+            Quote quot, Financials financial)
         {
-            Companies = companies;
-            Current = current;
-            Dates = dates;
-            Prices = prices;
-            Volumes = volumes;
-            AvgPrice = avgprice;
-            AvgVolume = avgvolume;
+            Companies = gainers;
+            symbol = sym;
+            price = pric;
+            quote = quot;
+            financials = financial;
+        }
+
+        public CompaniesStatistics()
+        {
         }
     }
 }

@@ -1,14 +1,11 @@
 ﻿@model IEXTrading.Models.ViewModel.CompaniesStatistics
 @{
-    ViewData["Title"] = "StockStat";
+    ViewData["Title"] = "Financials";
 }
 
-<h2>StockStat</h2>
+<h2>Quaterly Financial Data</h2>
 
-<h2>Chart</h2>
-<hr />
-
-<form asp-controller="Home" asp-action="StockStat" method="get">
+<form asp-controller="Home" asp-action="Financials" method="get">
     <select name="symbol">
         @foreach (var company in Model.Companies)
         {
@@ -17,9 +14,9 @@
     </select>
     <input type="submit" value="Get Data" />
 </form>
+
 @if (Model.symbol != null)
 {
-    <p> Price: @Html.DisplayFor(modelItem => Model.price)</p>
     <p> Financials </p>
     <table class="table">
         <thead>
@@ -49,15 +46,6 @@
                     </td>
                 </tr>
             }
-            <tr>
-                <td>
-                    <a id="dbopt" asp-controller="Home" asp-action="PopulateSymbols"><img src="~/images/button_save-data.png" /></a>
-                </td>
-            </tr>
         </tbody>
     </table>
 }
-
-<script>
-    alertDbSave(@ViewBag.dbSuccessChart);
-</script>

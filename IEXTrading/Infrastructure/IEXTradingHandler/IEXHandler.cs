@@ -101,6 +101,65 @@ namespace IEXTrading.Infrastructure.IEXTradingHandler
             return _list;
         }
 
+        public Financials getFinancials(string symbol)
+        {
+            string IEXTrading_API_PATH = BASE_URL + "stock/" + symbol + "/financials";
+            string dataFromApi = "";
+            Financials data = null;
+            httpClient.BaseAddress = new Uri(IEXTrading_API_PATH);
+            HttpResponseMessage response = httpClient.GetAsync(IEXTrading_API_PATH).GetAwaiter().GetResult();
+            if (response.IsSuccessStatusCode)
+            {
+                dataFromApi = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            }
+
+            if (!dataFromApi.Equals(""))
+            {
+                data = JsonConvert.DeserializeObject<Financials>(dataFromApi, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+            }
+            return data;
+        }
+
+        public double getPrice(string symbol)
+        {
+            string IEXTrading_API_PATH = BASE_URL + "stock/" + symbol + "/price";
+            string dataFromApi = "";
+            Double data = 0;
+            httpClient.BaseAddress = new Uri(IEXTrading_API_PATH);
+            HttpResponseMessage response = httpClient.GetAsync(IEXTrading_API_PATH).GetAwaiter().GetResult();
+            if (response.IsSuccessStatusCode)
+            {
+                dataFromApi = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            }
+
+            if (!dataFromApi.Equals(""))
+            {
+                data = JsonConvert.DeserializeObject<Double>(dataFromApi, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+            }
+            return data;
+        }
+
+        public Quote getQuotes(string symbol)
+        {
+            string IEXTrading_API_PATH = BASE_URL + "stock/" + symbol + "/quote";
+            string _stocklist = "";
+            Quote _list = null;
+            StockDetails sd = new StockDetails();
+
+            httpClient.BaseAddress = new Uri(IEXTrading_API_PATH);
+            HttpResponseMessage response = httpClient.GetAsync(IEXTrading_API_PATH).GetAwaiter().GetResult();
+            if (response.IsSuccessStatusCode)
+            {
+                _stocklist = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            }
+
+            if (!_stocklist.Equals(""))
+            {
+                _list = JsonConvert.DeserializeObject<Quote>(_stocklist, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+            }
+            return _list;
+        }
+
         public List<StockStats> Losers()
         {
             string IEXTrading_API_PATH = BASE_URL + "stock/market/list/losers";
