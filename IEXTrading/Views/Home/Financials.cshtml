@@ -4,6 +4,7 @@
 }
 
 <h2>Quaterly Financial Data</h2>
+<p> Save the Gainers data first to select a company</p>
 
 <form asp-controller="Home" asp-action="Financials" method="get">
     <select name="symbol">
@@ -21,30 +22,38 @@
     <table class="table">
         <thead>
             <tr>
-                <th> reportDate </th>
-                <th> grossProfit </th>
-                <th> costOfRevenue </th>
-                <th> operatingIncome </th>
+                <th> Report Date </th>
+                <th> Gross Profit </th>
+                <th> Net Income </th>
+                <th> Operating Expense </th>
+                <th> Total Assets </th>
+                <th> Total Liabilities </th>
             </tr>
         </thead>
         <tbody>
 
             @foreach (var item in Model.financials.financials)
             {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.reportDate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.grossProfit)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.costOfRevenue)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.operatingIncome)
-                    </td>
-                </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.reportDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.grossProfit)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.netIncome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.operatingExpense)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.totalAssets)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.totalLiabilities)
+                </td>
+            </tr>
             }
         </tbody>
     </table>

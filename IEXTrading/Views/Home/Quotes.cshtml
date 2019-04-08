@@ -1,0 +1,82 @@
+﻿@model IEXTrading.Models.ViewModel.CompaniesStatistics
+@{
+    ViewData["Title"] = "Quotes";
+}
+<h2>Quotes</h2>
+<p> Save the Gainers data first to select a company</p>
+
+<form asp-controller="Home" asp-action="Quotes" method="get">
+    <select name="symbol">
+        @foreach (var company in Model.Companies)
+        {
+            <option value=@company.symbol selected>@company.companyName</option>
+        }
+    </select>
+    <input type="submit" value="Get Data" />
+</form>
+
+@if (Model.symbol != null)
+{
+    <p> Financials </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <td>
+                    Symbol
+                </td>
+                <td>
+                    @Model.quote.symbol
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Name
+                </td>
+                <td>
+                    @Model.quote.companyName
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Low
+                </td>
+                <td>
+                    @Model.quote.low
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    High
+                </td>
+                <td>
+                    @Model.quote.high
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    Open
+                </td>
+                <td>
+                    @Model.quote.open
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Close
+                </td>
+                <td>
+                    @Model.quote.close
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Latest Price
+                </td>
+                <td>
+                    @Model.quote.latestPrice
+                </td>
+            </tr>
+        </thead>
+    </table>
+}

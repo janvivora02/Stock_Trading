@@ -13,26 +13,23 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 </head>
-<body>
+<body class="content">
     <nav>
         <div class="nav-bar">
             <a asp-area="" asp-controller="Home" asp-action="Index">Home </a><text> | </text>
             <a asp-area="" asp-controller="Home" asp-action="Symbols">Symbols </a><text> | </text>
             <a asp-area="" asp-controller="Home" asp-action="Chart">Chart </a><text> | </text>
             <a asp-area="" asp-controller="Home" asp-action="Gainers">Gainers </a><text> | </text>
-            <a asp-area="" asp-controller="Home" asp-action="Losers">Losers </a><text> | </text>
-            <a asp-area="" asp-controller="Home" asp-action="StockStat"> Company Performance </a><text> | </text>
+            <a asp-area="" asp-controller="Home" asp-action="Quotes"> Quotes </a><text> | </text>
             <a asp-area="" asp-controller="Home" asp-action="Financials"> Financials </a><text> | </text>
+            <a asp-area="" asp-controller="Home" asp-action="Losers">Losers </a><text> | </text>
             <a asp-area="" asp-controller="Home" asp-action="Refresh">Refresh </a><text> | </text>
-            <a asp-area="" asp-controller="Home" asp-action="About">About </a><text> | </text>
+            <a href="https://github.com/janvivora02/Stock_Trading">GitHub </a><text> </text>
         </div>
     </nav>
 
         @RenderBody()
         <hr />
-        <footer>
-            <p>ISDS, Muma College of Business, University of South Florida</p>
-        </footer>
     </div>
     @RenderSection("Scripts", required: false)
 </body>

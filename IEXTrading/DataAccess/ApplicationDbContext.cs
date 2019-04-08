@@ -17,5 +17,6 @@ namespace IEXTrading.DataAccess
         public DbSet<Gainers> Gainers { get; set; }
         public DbSet<Losers> Losers { get; set; }
         public DbSet<FinancialsData> FinancialData { get; set; }
+        public DbSet<Quote> Quotes { get; set; }
     }
 }

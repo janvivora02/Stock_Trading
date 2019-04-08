@@ -86,6 +86,58 @@ namespace IEXTrading.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Quotes",
+                columns: table => new
+                {
+                    sno = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    avgTotalVolume = table.Column<double>(nullable: false),
+                    calculationPrice = table.Column<string>(nullable: true),
+                    change = table.Column<double>(nullable: false),
+                    changePercent = table.Column<double>(nullable: false),
+                    close = table.Column<double>(nullable: false),
+                    closeTime = table.Column<double>(nullable: false),
+                    companyName = table.Column<string>(nullable: true),
+                    delayedPrice = table.Column<double>(nullable: false),
+                    delayedPriceTime = table.Column<double>(nullable: false),
+                    extendedChange = table.Column<double>(nullable: false),
+                    extendedChangePercent = table.Column<double>(nullable: false),
+                    extendedPrice = table.Column<double>(nullable: false),
+                    extendedPriceTime = table.Column<double>(nullable: false),
+                    high = table.Column<double>(nullable: false),
+                    iexAskPrice = table.Column<double>(nullable: false),
+                    iexAskSize = table.Column<double>(nullable: false),
+                    iexBidPrice = table.Column<double>(nullable: false),
+                    iexBidSize = table.Column<double>(nullable: false),
+                    iexLastUpdated = table.Column<double>(nullable: false),
+                    iexMarketPercent = table.Column<double>(nullable: false),
+                    iexRealtimePrice = table.Column<double>(nullable: false),
+                    iexRealtimeSize = table.Column<double>(nullable: false),
+                    iexVolume = table.Column<double>(nullable: false),
+                    latestPrice = table.Column<double>(nullable: false),
+                    latestSource = table.Column<string>(nullable: true),
+                    latestTime = table.Column<string>(nullable: true),
+                    latestUpdate = table.Column<double>(nullable: false),
+                    latestVolume = table.Column<double>(nullable: false),
+                    low = table.Column<double>(nullable: false),
+                    marketCap = table.Column<double>(nullable: false),
+                    open = table.Column<double>(nullable: false),
+                    openTime = table.Column<double>(nullable: false),
+                    peRatio = table.Column<double>(nullable: false),
+                    previousClose = table.Column<double>(nullable: false),
+                    primaryExchange = table.Column<string>(nullable: true),
+                    sector = table.Column<string>(nullable: true),
+                    symbol = table.Column<string>(nullable: true),
+                    week52High = table.Column<double>(nullable: false),
+                    week52Low = table.Column<double>(nullable: false),
+                    ytdChange = table.Column<double>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Quotes", x => x.sno);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Equities",
                 columns: table => new
                 {
@@ -135,6 +187,9 @@ namespace IEXTrading.Migrations
 
             migrationBuilder.DropTable(
                 name: "Losers");
+
+            migrationBuilder.DropTable(
+                name: "Quotes");
 
             migrationBuilder.DropTable(
                 name: "Companies");

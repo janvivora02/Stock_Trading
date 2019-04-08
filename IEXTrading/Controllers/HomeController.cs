@@ -103,6 +103,7 @@ namespace MVCTemplate.Controllers
             tableCount.Add("Gainers", dbContext.Gainers.Count());
             tableCount.Add("Losers", dbContext.Losers.Count());
             tableCount.Add("FinancialData", dbContext.FinancialData.Count());
+            tableCount.Add("Quotes", dbContext.FinancialData.Count());
             return View(tableCount);
         }
 
@@ -199,6 +200,7 @@ namespace MVCTemplate.Controllers
                 dbContext.Gainers.RemoveRange(dbContext.Gainers);
                 dbContext.Losers.RemoveRange(dbContext.Losers);
                 dbContext.FinancialData.RemoveRange(dbContext.FinancialData);
+                dbContext.Quotes.RemoveRange(dbContext.Quotes);
             }
             else if ("Companies".Equals(tableToDel))
             {
@@ -222,6 +224,10 @@ namespace MVCTemplate.Controllers
             else if ("FinancialData".Equals(tableToDel))
             {
                 dbContext.FinancialData.RemoveRange(dbContext.FinancialData);
+            }
+            else if ("Quotes".Equals(tableToDel))
+            {
+                dbContext.Quotes.RemoveRange(dbContext.Quotes);
             }
             dbContext.SaveChanges();
         }
@@ -274,12 +280,28 @@ namespace MVCTemplate.Controllers
                 stat.symbol = symbol;
                 IEXHandler webHandler = new IEXHandler();
                 stat.financials = webHandler.getFinancials(symbol);
-                int count = 1;
                 foreach (FinancialsData data in stat.financials.financials)
                 {
                     data.symbol = symbol;
                     dbContext.FinancialData.Add(data);
                 }
+            }
+            dbContext.SaveChanges();
+            ViewBag.dbSuccessComp = 1;
+            return View(stat);
+        }
+
+        public IActionResult Quotes(string symbol)
+        {
+            ViewBag.dbSucessComp = 0;
+            CompaniesStatistics stat = new CompaniesStatistics();
+            stat.Companies = dbContext.Gainers.ToList();
+            if (symbol != null)
+            {
+                stat.symbol = symbol;
+                IEXHandler webHandler = new IEXHandler();
+                stat.quote = webHandler.getQuotes(symbol);
+                dbContext.Quotes.Add(stat.quote);
             }
             dbContext.SaveChanges();
             ViewBag.dbSuccessComp = 1;

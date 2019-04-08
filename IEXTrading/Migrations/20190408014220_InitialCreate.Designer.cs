@@ -11,7 +11,7 @@ using System;
 namespace IEXTrading.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190408001930_InitialCreate")]
+    [Migration("20190408014220_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -159,6 +159,96 @@ namespace IEXTrading.Migrations
                     b.HasKey("symbol");
 
                     b.ToTable("Losers");
+                });
+
+            modelBuilder.Entity("IEXTrading.Models.Quote", b =>
+                {
+                    b.Property<int>("sno")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<double>("avgTotalVolume");
+
+                    b.Property<string>("calculationPrice");
+
+                    b.Property<double>("change");
+
+                    b.Property<double>("changePercent");
+
+                    b.Property<double>("close");
+
+                    b.Property<double>("closeTime");
+
+                    b.Property<string>("companyName");
+
+                    b.Property<double>("delayedPrice");
+
+                    b.Property<double>("delayedPriceTime");
+
+                    b.Property<double>("extendedChange");
+
+                    b.Property<double>("extendedChangePercent");
+
+                    b.Property<double>("extendedPrice");
+
+                    b.Property<double>("extendedPriceTime");
+
+                    b.Property<double>("high");
+
+                    b.Property<double>("iexAskPrice");
+
+                    b.Property<double>("iexAskSize");
+
+                    b.Property<double>("iexBidPrice");
+
+                    b.Property<double>("iexBidSize");
+
+                    b.Property<double>("iexLastUpdated");
+
+                    b.Property<double>("iexMarketPercent");
+
+                    b.Property<double>("iexRealtimePrice");
+
+                    b.Property<double>("iexRealtimeSize");
+
+                    b.Property<double>("iexVolume");
+
+                    b.Property<double>("latestPrice");
+
+                    b.Property<string>("latestSource");
+
+                    b.Property<string>("latestTime");
+
+                    b.Property<double>("latestUpdate");
+
+                    b.Property<double>("latestVolume");
+
+                    b.Property<double>("low");
+
+                    b.Property<double>("marketCap");
+
+                    b.Property<double>("open");
+
+                    b.Property<double>("openTime");
+
+                    b.Property<double>("peRatio");
+
+                    b.Property<double>("previousClose");
+
+                    b.Property<string>("primaryExchange");
+
+                    b.Property<string>("sector");
+
+                    b.Property<string>("symbol");
+
+                    b.Property<double>("week52High");
+
+                    b.Property<double>("week52Low");
+
+                    b.Property<double>("ytdChange");
+
+                    b.HasKey("sno");
+
+                    b.ToTable("Quotes");
                 });
 
             modelBuilder.Entity("IEXTrading.Models.Equity", b =>
