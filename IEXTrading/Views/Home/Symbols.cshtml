@@ -1,7 +1,6 @@
 ﻿@model IEnumerable<IEXTrading.Models.Company>
 
 <h2>Symbols</h2>
-<hr />
 
 <table class="table">
     <thead>
@@ -32,13 +31,5 @@
                 </td>
             </tr>
         }
-        <tr>
-            <td>
-                <a id="dbopt" asp-controller="Home" asp-action="PopulateSymbols"><img src="~/images/button_save-data.png" /></a>
-            </td>
-        </tr>
     </tbody>
 </table>
-<script>
-    alertDbSave(@ViewBag.dbSuccessComp);
-</script>

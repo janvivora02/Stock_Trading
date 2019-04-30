@@ -5,7 +5,6 @@
 }
 
 <h2>Chart</h2>
-<p> Save the symbols data to select a company. </p>
 <hr />
 
 <form asp-controller="Home" asp-action="Chart" method="get">
@@ -75,7 +74,7 @@
                     </div>
                 </td>
                 <td>
-                    <a asp-controller="Home" asp-action="SaveCharts" asp-route-symbol="@Model.Current.symbol"><img src="~/images/button_save-data.png" /></a>
+                    <a asp-controller="Home" asp-action="SaveCharts" asp-route-symbol="@Model.Current.symbol"> Save Charts</a>
                 </td>
             </tr>
         </tbody>

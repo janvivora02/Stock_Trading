@@ -5,7 +5,6 @@
 
 <h2>Top 10 Losers</h2>
 
-<hr />
 <table class="table">
     <thead>
         <tr>
@@ -36,14 +35,6 @@
         @{
             Model.Count();
         }
-        <tr>
-            <td>
-                <a id="dboptg" asp-controller="Home" asp-action="PopulateLosers">Save Losers</a>
-            </td>
-        </tr>
     </tbody>
 </table>
 
-<script>
-    alertDbSave(@ViewBag.dbSuccessComp);
-</script>

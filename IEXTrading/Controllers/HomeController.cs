@@ -46,14 +46,9 @@ namespace MVCTemplate.Controllers
         ****/
         public IActionResult Symbols()
         {
-            //Set ViewBag variable first
-            ViewBag.dbSucessComp = 0;
             IEXHandler webHandler = new IEXHandler();
             List<Company> companies = webHandler.GetSymbols();
-
-            String companiesData = JsonConvert.SerializeObject(companies);
-            HttpContext.Session.SetString(SessionKeyName, companiesData);
-
+            PopulateSymbols();
             return View(companies);
         }
 
@@ -64,7 +59,7 @@ namespace MVCTemplate.Controllers
         ****/
         public IActionResult Chart(string symbol)
         {
-            //Set ViewBag variable first
+            PopulateSymbols();
             ViewBag.dbSuccessChart = 0;
             List<Equity> equities = new List<Equity>();
             if (symbol != null)
@@ -103,16 +98,18 @@ namespace MVCTemplate.Controllers
             tableCount.Add("Gainers", dbContext.Gainers.Count());
             tableCount.Add("Losers", dbContext.Losers.Count());
             tableCount.Add("FinancialData", dbContext.FinancialData.Count());
-            tableCount.Add("Quotes", dbContext.FinancialData.Count());
+            tableCount.Add("Quotes", dbContext.Quotes.Count());
             return View(tableCount);
         }
 
         /****
          * Saves the Symbols in database.
         ****/
-        public IActionResult PopulateSymbols()
+        public void PopulateSymbols()
         {
-            string companiesData = HttpContext.Session.GetString(SessionKeyName);
+            IEXHandler webHandler = new IEXHandler();
+            List<Company> companiesRes = webHandler.GetSymbols();
+            String companiesData = JsonConvert.SerializeObject(companiesRes);
             List<Company> companies = null;
             if (companiesData != "")
             {
@@ -129,15 +126,15 @@ namespace MVCTemplate.Controllers
                 }
             }
             dbContext.SaveChanges();
-            ViewBag.dbSuccessComp = 1;
-            return View("Symbols", companies);
         }
         /****
          * Saves the gainers in database.
         ****/
-        public IActionResult PopulateGainers()
+        public void PopulateGainers()
         {
-            string gainersData = HttpContext.Session.GetString(SessionKeyName);
+            IEXHandler webHandler = new IEXHandler();
+            List<StockStats> gainersListRes = webHandler.Gainers();
+            String gainersData = JsonConvert.SerializeObject(gainersListRes);
             List<StockStats> gainersList = null;
             if (gainersData != "")
             {
@@ -160,8 +157,6 @@ namespace MVCTemplate.Controllers
                 }
             }
             dbContext.SaveChanges();
-            ViewBag.dbSuccessComp = 1;
-            return View("Gainers", gainersList);
         }
         /****
          * Saves the equities in database.
@@ -272,7 +267,7 @@ namespace MVCTemplate.Controllers
 
         public IActionResult Financials(string symbol)
         {
-            ViewBag.dbSucessComp = 0;
+            PopulateGainers();
             CompaniesStatistics stat = new CompaniesStatistics();
             stat.Companies = dbContext.Gainers.ToList();
             if (symbol != null)
@@ -287,13 +282,12 @@ namespace MVCTemplate.Controllers
                 }
             }
             dbContext.SaveChanges();
-            ViewBag.dbSuccessComp = 1;
             return View(stat);
         }
 
         public IActionResult Quotes(string symbol)
         {
-            ViewBag.dbSucessComp = 0;
+            PopulateGainers();
             CompaniesStatistics stat = new CompaniesStatistics();
             stat.Companies = dbContext.Gainers.ToList();
             if (symbol != null)
@@ -304,33 +298,30 @@ namespace MVCTemplate.Controllers
                 dbContext.Quotes.Add(stat.quote);
             }
             dbContext.SaveChanges();
-            ViewBag.dbSuccessComp = 1;
             return View(stat);
         }
 
         public IActionResult Gainers()
         {
-            ViewBag.dbSucessComp = 0;
             IEXHandler webHandler = new IEXHandler();
             List<StockStats> gainersList = webHandler.Gainers();
-            String gainersData = JsonConvert.SerializeObject(gainersList);
-            HttpContext.Session.SetString(SessionKeyName, gainersData);
+            PopulateGainers();
             return View(gainersList);
         }
 
         public IActionResult Losers()
         {
-            ViewBag.dbSucessComp = 0;
             IEXHandler webHandler = new IEXHandler();
             List<StockStats> losersList = webHandler.Losers();
-            String losersData = JsonConvert.SerializeObject(losersList);
-            HttpContext.Session.SetString(SessionKeyName, losersData);
+            PopulateLosers();
             return View(losersList);
         }
 
-        public IActionResult PopulateLosers()
+        public void PopulateLosers()
         {
-            string losersData = HttpContext.Session.GetString(SessionKeyName);
+            IEXHandler webHandler = new IEXHandler();
+            List<StockStats> losersListRes = webHandler.Losers();
+            String losersData = JsonConvert.SerializeObject(losersListRes);
             List<StockStats> losersList = null;
             if (losersData != "")
             {
@@ -353,8 +344,6 @@ namespace MVCTemplate.Controllers
                 }
             }
             dbContext.SaveChanges();
-            ViewBag.dbSuccessComp = 1;
-            return View("Losers", losersList);
         }
 
     }
